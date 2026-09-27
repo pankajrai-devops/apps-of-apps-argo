@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: dev-tomcat-frontend, namespace: argocd }
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pankajrai-devops/micro-services-helm-monorepo'
+    targetRevision: HEAD
+    path: charts/tomcat-web-service
+    helm:
+      valueFiles: ['../../environments/dev/tomcat-values.yaml']
+  destination: { name: dev-cluster, namespace: webapp-dev }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

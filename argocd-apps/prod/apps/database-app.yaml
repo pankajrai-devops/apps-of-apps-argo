@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: prod-postgres-backend, namespace: argocd }
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pankajrai-devops/micro-services-helm-monorepo'
+    targetRevision: 'refs/tags/prod-release*'
+    path: charts/postgres-db-service
+    helm:
+      valueFiles: ['../../environments/prod/postgres-values.yaml']
+  destination: { name: prod-cluster, namespace: webapp-production }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

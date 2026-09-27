@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: qa-postgres-backend, namespace: argocd }
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pankajrai-devops/micro-services-helm-monorepo'
+    targetRevision: 'refs/tags/qa-release*'
+    path: charts/postgres-db-service
+    helm:
+      valueFiles: ['../../environments/qa/postgres-values.yaml']
+  destination: { name: qa-cluster, namespace: webapp-qa }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

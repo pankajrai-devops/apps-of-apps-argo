@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: { name: dev-postgres-backend, namespace: argocd }
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pankajrai-devops/micro-services-helm-monorepo'
+    targetRevision: HEAD
+    path: charts/postgres-db-service
+    helm:
+      valueFiles: ['../../environments/dev/postgres-values.yaml']
+  destination: { name: dev-cluster, namespace: webapp-dev }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
